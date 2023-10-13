@@ -9,13 +9,9 @@ import argparse
 import logging
 import os
 import pprint
-import pathlib
-
-import pandas as pd
+import sys
 
 logger = logging.getLogger(__name__)
-
-
 
 
 def main():
@@ -26,11 +22,11 @@ def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-    "--config",
-    type=argparse.FileType("r", encoding="utf-8"),
-    default=None,
-    help="YAML file providing spot config.",
-)
+        "--config",
+        type=argparse.FileType("r", encoding="utf-8"),
+        default=None,
+        help="YAML file to override config options",
+    )
 
     parser.add_argument("-o", "--output", default=sys.stdout, type=argparse.FileType("w", encoding="utf-8"))
     parser.add_argument("--url", default=os.environ.get("INFLUX_URL", "us-east-1-1.aws.cloud2.influxdata.com"))
