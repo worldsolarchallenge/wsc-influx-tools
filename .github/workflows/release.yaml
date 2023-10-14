@@ -8,6 +8,9 @@ jobs:
   release:
     name: Deploy release to PyPI
     runs-on: ubuntu-latest
+    # environment: release
+    permissions:
+      id-token: write
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
@@ -26,9 +29,6 @@ jobs:
         run: |
           python -m build
           twine check dist/*
-          
+
       - name: Upload package
         uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
