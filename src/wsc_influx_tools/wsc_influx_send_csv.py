@@ -33,7 +33,7 @@ def main():
         help="YAML file to override config options",
     )
 
-#    parser.add_argument("-o", "--output", default=sys.stdout, type=argparse.FileType("w", encoding="utf-8"))
+    #    parser.add_argument("-o", "--output", default=sys.stdout, type=argparse.FileType("w", encoding="utf-8"))
 
     parser.add_argument("--url", default=os.environ.get("INFLUX_URL", "https://us-east-1-1.aws.cloud2.influxdata.com"))
     parser.add_argument("--bucket", default=os.environ.get("INFLUX_BUCKET", "test"))
@@ -68,7 +68,6 @@ def main():
 
     logger.info("Writing data to %s", pprint.pformat(config["influx"]))
 
-
     # ##################################
     # Set up the influxdb client object.
     # ##################################
@@ -79,11 +78,7 @@ def main():
     #     database=config["influx"]["bucket"],
     # )
 
-    client = influxdb_client.InfluxDBClient(
-         url=config["influx"]["url"],
-         org=config["influx"]["org"],
-         token=args.token
-    )
+    client = influxdb_client.InfluxDBClient(url=config["influx"]["url"], org=config["influx"]["org"], token=args.token)
 
     write_api = client.write_api(write_options=SYNCHRONOUS)
 
@@ -97,8 +92,8 @@ def main():
 
             for point in points:
                 logger.debug("Writing '%s'", point)
-                write_api.write(bucket=config["influx"]["bucket"],
-                            record=point)
+                write_api.write(bucket=config["influx"]["bucket"], record=point)
+
 
 #            p = influxdb_client.Point("my_measurement").tag("location", "Prague").field("temperature", 25.3)
 #            write_api.write(bucket=config["influx"]["bucket"],

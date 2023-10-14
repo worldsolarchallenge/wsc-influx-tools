@@ -16,6 +16,7 @@ import influxdb_client_3
 
 logger = logging.getLogger(__name__)
 
+
 def main():
     """Main function."""
 
@@ -39,7 +40,7 @@ def main():
     parser.add_argument("--quiet", default=False, action="store_true")
     parser.add_argument("--dryrun", default=False, action="store_true")
 
-    parser.add_argument("-o", "--output", type=argparse.FileType('w', encoding='utf-8'), default=sys.stdout)
+    parser.add_argument("-o", "--output", type=argparse.FileType("w", encoding="utf-8"), default=sys.stdout)
     parser.add_argument("-f", "--format", choices=["markdown", "json", "csv"], default="markdown")
 
     group = parser.add_argument_group("Query Parameters")
@@ -47,7 +48,9 @@ def main():
     group.add_argument("--query", type=str, default=None, help="Change to a InfluxQL query")
 
     # Parameters when using the default query.
-    group.add_argument("--window", default=86400, help="Amount of history to grab, in seconds, when using the default query.")
+    group.add_argument(
+        "--window", default=86400, help="Amount of history to grab, in seconds, when using the default query."
+    )
     group.add_argument("--measurement", default="telemetry", help="Influx measurement to query")
 
     args = parser.parse_args()
@@ -65,19 +68,17 @@ def main():
             "org": args.org,
             "url": args.url,
         },
-        "query":{
+        "query": {
             "query": args.query,
             "window": args.window,
             "measurement": args.measurement,
-        }
-
+        },
     }
     config = config_defaults
     if args.config:
         config = mergedeep.merge(config_defaults, yaml.safe_load(args.config))
 
     logger.debug("Reading data from %s", pprint.pformat(config["influx"]))
-
 
     ####################################
     # Set up the influxdb client object.
@@ -116,7 +117,7 @@ WHERE time >= now() - {config["query"]["window"]}s
     if args.format == "markdown":
         args.output.write(str(data_frame))
     elif args.format == "json":
-        args.output.write(data_frame.to_json(orient='records'))
+        args.output.write(data_frame.to_json(orient="records"))
     elif args.format == "csv":
         args.output.write(data_frame.to_csv())
 
