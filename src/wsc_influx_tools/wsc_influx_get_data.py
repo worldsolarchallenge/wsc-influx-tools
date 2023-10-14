@@ -1,3 +1,4 @@
+# pylint: disable=duplicate-code
 """wsc-influx-get-data
 
 This CLI tool downloads data from an influx database.

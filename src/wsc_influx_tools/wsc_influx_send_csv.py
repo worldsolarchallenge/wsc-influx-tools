@@ -9,7 +9,6 @@ import logging
 import os
 import pathlib
 import pprint
-import sys
 import yaml
 
 import influxdb_client
