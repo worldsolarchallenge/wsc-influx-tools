@@ -34,16 +34,20 @@ def main():
 
     #    parser.add_argument("-o", "--output", default=sys.stdout, type=argparse.FileType("w", encoding="utf-8"))
 
-    parser.add_argument("--url", default=os.environ.get("INFLUX_URL", "https://us-east-1-1.aws.cloud2.influxdata.com"))
-    parser.add_argument("--bucket", default=os.environ.get("INFLUX_BUCKET", "test"))
-    parser.add_argument("--org", default=os.environ.get("INFLUX_ORG", "Bridgestone World Solar Challenge"))
-    parser.add_argument("--token", default=os.environ.get("INFLUX_TOKEN", None))
+    group = parser.add_argument_group("influx")
+    group.add_argument("--url", default=os.environ.get("INFLUX_URL", "https://us-east-1-1.aws.cloud2.influxdata.com"))
+    group.add_argument("--bucket", default=os.environ.get("INFLUX_BUCKET", "test"))
+    group.add_argument("--org", default=os.environ.get("INFLUX_ORG", "Bridgestone World Solar Challenge"))
+    group.add_argument("--token", default=os.environ.get("INFLUX_TOKEN", None))
 
-    parser.add_argument("--debug", default=False, action="store_true")
-    parser.add_argument("--quiet", default=False, action="store_true")
+    group = parser.add_argument_group("logging")
+    group.add_argument("--debug", default=False, action="store_true")
+    group.add_argument("--quiet", default=False, action="store_true")
+
     parser.add_argument("--dryrun", default=False, action="store_true")
 
-    parser.add_argument("--input", type=pathlib.Path, default=pathlib.Path("/dev/stdin"))
+    group = parser.add_argument_group("Input")
+    group.add_argument("--input", type=pathlib.Path, default=pathlib.Path("/dev/stdin"))
 
     args = parser.parse_args()
 
@@ -88,10 +92,8 @@ def main():
             logger.debug("Writing points to influx")
             points = f.readlines()
             logger.debug("Writing %d points to influx", len(points))
-
-            for point in points:
-                logger.debug("Writing '%s'", point)
-                write_api.write(bucket=config["influx"]["bucket"], record=point)
+            write_api.write(bucket=config["influx"]["bucket"], \
+                            record=points)
 
 
 #            p = influxdb_client.Point("my_measurement").tag("location", "Prague").field("temperature", 25.3)

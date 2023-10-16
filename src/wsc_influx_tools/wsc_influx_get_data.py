@@ -33,7 +33,7 @@ def main():
     )
 
     parser.add_argument("--url", default=os.environ.get("INFLUX_URL", "https://us-east-1-1.aws.cloud2.influxdata.com"))
-    parser.add_argument("--bucket", default=os.environ.get("INFLUX_BUCKET", "bwsc2023"))
+    parser.add_argument("--bucket", default=os.environ.get("INFLUX_BUCKET", "bwsc"))
     parser.add_argument("--org", default=os.environ.get("INFLUX_ORG", "Bridgestone World Solar Challenge"))
     parser.add_argument("--token", default=os.environ.get("INFLUX_TOKEN", None))
 
