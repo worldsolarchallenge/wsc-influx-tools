@@ -23,8 +23,10 @@ given a URL and a token.
 
 Note that many of hte fields included below are overwritten (e.g. car name, team number, etc.)
 
+Note that the precision used for the timestamp at the end of the line is nanoseconds (i.e. seconds * 1000000000)
+
 ```bash
-wsc-influx-send-data --url=https://telemetry.worldsolarchallenge.org/test/ingest/michigan --token=${TOKEN_GOES_HERE} << EOF
+wsc-influx-send-data --url https://telemetry.worldsolarchallenge.org/test/ingest/michigan --token TOKEN_GOES_HERE << EOF
 telemetry,event=BWSC2023,class=Cruiser,team=World\ Solar\ Challenge\ Faculty,car=Solar\ Wombat\ 3,shortname=WSC\ Faculty longitude=135.26007,latitude=-30.24246,altitude=187.3,distance=432162,solarEnergy=20914846,batteryEnergy=52278368 1697461695000000000
 EOF
 ```
@@ -42,7 +44,7 @@ $ wsc-influx-get-data \
         --bucket test-teamdata \
         --measurement teamdata \
         --format=csv \
-        --token cBh8ypvqLO4tU4iWzC0z6d_TETKtpxDGCGl9uoEWOS2VWtIQalC94MgvRYMUyM-MpxrorvAoT8nJ3mwCrowQ_g==
+        --token TOKEN_GOES_HERE
 INFO:wsc_influx_tools.wsc_influx_get_data:Querying using default query with params: {'query': None, 'window': 86400, 'measurement': 'teamdata'}
 INFO:wsc_influx_tools.wsc_influx_get_data:Found 1 entries
 ,iox::measurement,time,altitude,batteryEnergy,car,class,distance,escapedname,event,host,latitude,longitude,shortname,solarEnergy,team,teamnum
