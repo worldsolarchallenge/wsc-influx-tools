@@ -7,10 +7,13 @@ This is a python module which provides several CLI tools for interacting with th
 ## Installing wsc-influx-tools
 
 wsc-influx-tools is a python package. THis has been tested on Linux and Mac (using Python 3.11).
-Let us know if there are any issues.
+Let us know if there are any issues. It can be installed using `pip`.
 ```bash
-$ pip install wsc-influx-tools
-...
+pip install wsc-influx-tools
+```
+
+The commands have useful help
+```
 $ wsc-influx-send-data --help
 usage: wsc-influx-send-data [-h] [--config CONFIG] [--url URL] [--bucket BUCKET] [--org ORG]
                             [--token TOKEN] [--debug] [--quiet] [--dryrun] [--input INPUT]
@@ -40,13 +43,15 @@ By default the wsc-influx-get-data command will query the last day's data from t
 measurement in the given bucket.
 
 ```bash
-$ wsc-influx-get-data \
+wsc-influx-get-data \
         --bucket test-teamdata \
         --measurement teamdata \
         --format=csv \
         --token TOKEN_GOES_HERE
-INFO:wsc_influx_tools.wsc_influx_get_data:Querying using default query with params: {'query': None, 'window': 86400, 'measurement': 'teamdata'}
-INFO:wsc_influx_tools.wsc_influx_get_data:Found 1 entries
+```
+
+The above results in a CSV output on the command line:
+```bash
 ,iox::measurement,time,altitude,batteryEnergy,car,class,distance,escapedname,event,host,latitude,longitude,shortname,solarEnergy,team,teamnum
 0,teamdata,2023-10-16 13:08:15,187.3,52278368.0,Astrum,Challenger,432162.0,michigan,BWSC2023,telegraf-deployment-michigan-6c497bc786-f4xdg,-30.24246,135.26007,Michigan,20914846.0,University of Michigan Solar Car Team,2
 ```
