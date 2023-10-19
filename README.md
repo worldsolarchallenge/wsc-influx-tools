@@ -60,6 +60,8 @@ The above results in a CSV output on the command line:
 
 #### Using `curl`:
 
+Curl is a tool to send web requests.
+
 ```bash
 curl -i \
     -XPOST 'https://telemetry.worldsolarchallenge.org/test/ingest/TEAMNAME/api/v2/write' \
@@ -90,4 +92,12 @@ Write a config file something like this:
 
   ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
   data_format = "influx"
+```
+
+(You can find out about telegraf config files here -- https://docs.influxdata.com/telegraf/v1/configuration/) and the file input plugin configuration information is here -- https://github.com/influxdata/telegraf/blob/release-1.28/plugins/inputs/file/README.md
+
+You can then run the config above using this command (the `--once` parameter instructs telegraf to only upload the file once -- it would normally poll the file for updates and send the entire file each time.)
+
+```bash
+telegraf -config sample-telegraf-config.conf --once
 ```
