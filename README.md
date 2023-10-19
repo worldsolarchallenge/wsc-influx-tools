@@ -55,3 +55,39 @@ The above results in a CSV output on the command line:
 ,iox::measurement,time,altitude,batteryEnergy,car,class,distance,escapedname,event,host,latitude,longitude,shortname,solarEnergy,team,teamnum
 0,teamdata,2023-10-16 13:08:15,187.3,52278368.0,Astrum,Challenger,432162.0,michigan,BWSC2023,telegraf-deployment-michigan-6c497bc786-f4xdg,-30.24246,135.26007,Michigan,20914846.0,University of Michigan Solar Car Team,2
 ```
+
+## Other ways of writing to Influx
+
+#### Using `curl`:
+
+```bash
+curl -i \
+    -XPOST 'https://telemetry.worldsolarchallenge.org/test/ingest/TEAMNAME/api/v2/write' \
+    --header "Authorization: Token ${INFLUX_TOKEN}" \
+    --data-binary 'telemetry,event=BWSC2023,class=Cruiser,team=World\ Solar\ Challenge\ Faculty,car=Solar\ Wombat\ 3,shortname=WSC\ Faculty longitude=135.26007,latitude=-30.24246,altitude=187.3,distance=432162,solarEnergy=20914846,batteryEnergy=52278368 1697594014123456789'
+```
+
+#### Using telegraf
+
+Telegraf is provided by InfluxDB for ingesting data. It can be used to upload lots of metrics, including files.
+
+Install telegraf using a package manager.
+
+Write a config file something like this:
+```toml
+[[outputs.influxdb_v2]]
+  urls = ["https://telemetry.worldsolarchallenge.org/test/ingest/<TEAM NAME HERE>"]
+
+  ## Token for authentication.
+  token = "<YOUR TOKEN GOES HERE>"
+
+  ## Organization is the name of the organization you wish to write to; must exist.
+  organization = "Bridgestone World Solar Challenge"
+
+# Parse a complete file each interval
+[[inputs.file]]
+  files = ["file_to_send.influx"]
+
+  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
+  data_format = "influx"
+```
